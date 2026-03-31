@@ -15,7 +15,7 @@ struct RecordingResult {
 
 enum MetaJSONParser {
 
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.QuickNoteObsidian"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.VoiceDrop"
     private static let logger = Logger(subsystem: subsystem, category: "MetaJSONParser")
 
     /// meta.json을 파싱하여 RecordingResult를 반환한다.

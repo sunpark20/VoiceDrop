@@ -23,7 +23,7 @@ final class FileWatcher {
     weak var delegate: FileWatcherDelegate?
     private(set) var isWatching = false
 
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.QuickNoteObsidian"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.VoiceDrop"
     private let logger = Logger(subsystem: FileWatcher.subsystem, category: "FileWatcher")
     private var pollTimer: Timer?
     private var processedDirectories: Set<String> = []

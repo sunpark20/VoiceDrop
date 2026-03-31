@@ -5,7 +5,7 @@ import os
 
 final class AppState: NSObject {
 
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.QuickNoteObsidian"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.VoiceDrop"
     private let logger = Logger(subsystem: AppState.subsystem, category: "AppState")
 
     static func debug(_ message: String) {
@@ -22,7 +22,6 @@ final class AppState: NSObject {
 
     private let configManager = ConfigManager.shared
     private let menuBarManager = MenuBarManager()
-    private let hotkeyManager = HotkeyManager()
     private let hudPanel = HUDPanel()
     private var fileWatcher: FileWatcher?
 
@@ -31,7 +30,6 @@ final class AppState: NSObject {
     func start() {
         AppState.debug("[DEBUG] AppState.start()")
         setupMenuBar()
-        setupHotkey()
         setupFileWatcher()
         validatePaths()
         AppState.debug("[DEBUG] AppState started — watching: \(configManager.recordingsPath)")
@@ -45,13 +43,6 @@ final class AppState: NSObject {
         menuBarManager.setup()
     }
 
-    private func setupHotkey() {
-        hotkeyManager.onHotkeyPressed = { [weak self] in
-            self?.triggerRecording()
-        }
-        hotkeyManager.register()
-    }
-
     private func setupFileWatcher() {
         fileWatcher = FileWatcher(watchPath: configManager.recordingsPath)
         fileWatcher?.delegate = self
@@ -60,29 +51,24 @@ final class AppState: NSObject {
 
     private func validatePaths() {
         let recordingsPath = NSString(string: configManager.recordingsPath).expandingTildeInPath
-        let vaultPath = configManager.vaultPath
+        let notePath = configManager.noteDirectoryURL.path
 
         if !FileManager.default.fileExists(atPath: recordingsPath) {
             menuBarManager.updateStatus(.error("녹음 폴더를 찾을 수 없습니다"))
             logger.warning("Recordings path not found: \(recordingsPath)")
         }
 
-        if !FileManager.default.fileExists(atPath: vaultPath) {
-            menuBarManager.updateStatus(.error("Obsidian Vault를 찾을 수 없습니다"))
-            logger.warning("Vault path not found: \(vaultPath)")
+        if !FileManager.default.fileExists(atPath: notePath) {
+            // 노트 폴더가 없으면 자동 생성 시도
+            do {
+                try FileManager.default.createDirectory(atPath: notePath, withIntermediateDirectories: true)
+            } catch {
+                menuBarManager.updateStatus(.error("저장 폴더를 만들 수 없습니다"))
+                logger.warning("Note path not found: \(notePath)")
+            }
         }
     }
 
-    // MARK: - Actions
-
-    private func triggerRecording() {
-        guard let url = URL(string: "superwhisper://record") else { return }
-
-        if !NSWorkspace.shared.open(url) {
-            logger.error("Failed to open SuperWhisper deep link")
-            menuBarManager.updateStatus(.error("SuperWhisper를 실행할 수 없습니다"))
-        }
-    }
 }
 
 // MARK: - FileWatcherDelegate
@@ -122,8 +108,22 @@ extension AppState: FileWatcherDelegate {
 
 extension AppState: MenuBarManagerDelegate {
 
-    func menuBarManagerDidRequestRecording(_ manager: MenuBarManager) {
-        triggerRecording()
+    func menuBarManagerDidRequestChangeFolder(_ manager: MenuBarManager) {
+        let panel = NSOpenPanel()
+        panel.title = "노트 저장 폴더 선택"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.directoryURL = configManager.noteDirectoryURL
+
+        // 메뉴바 앱에서 패널을 앞으로 가져오기
+        NSApp.activate(ignoringOtherApps: true)
+
+        if panel.runModal() == .OK, let url = panel.url {
+            configManager.saveNoteDirectory(url)
+            menuBarManager.rebuildMenu()
+            AppState.debug("[DEBUG] Note folder changed to: \(url.path)")
+        }
     }
 
     func menuBarManagerDidRequestQuit(_ manager: MenuBarManager) {

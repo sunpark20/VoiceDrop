@@ -1,4 +1,4 @@
-APP_NAME    = QuickNoteObsidian
+APP_NAME    = VoiceDrop
 SRC_DIR     = $(APP_NAME)
 SOURCES     = $(wildcard $(SRC_DIR)/*.swift)
 BUILD_DIR   = build
@@ -6,7 +6,7 @@ APP_BUNDLE  = $(BUILD_DIR)/$(APP_NAME).app
 CONTENTS    = $(APP_BUNDLE)/Contents
 MACOS_DIR   = $(CONTENTS)/MacOS
 
-SWIFT_FLAGS = -parse-as-library -framework AppKit -framework ApplicationServices
+SWIFT_FLAGS = -parse-as-library -framework AppKit
 
 .PHONY: build clean run debug
 

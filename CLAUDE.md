@@ -1,4 +1,4 @@
-# QuickNoteObsidian
+# VoiceDrop
 
 macOS 메뉴바에 상주하며, SuperWhisper 음성 인식 결과를 자동으로 Obsidian 노트로 생성하는 Swift 네이티브 앱.
 

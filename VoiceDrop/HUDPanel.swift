@@ -5,7 +5,7 @@ import os
 
 final class HUDPanel: NSObject {
 
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.QuickNoteObsidian"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.VoiceDrop"
     private let logger = Logger(subsystem: HUDPanel.subsystem, category: "HUDPanel")
 
     private var window: NSWindow?

@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko</string>
 	<key>CFBundleExecutable</key>
-	<string>QuickNoteObsidian</string>
+	<string>VoiceDrop</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sunguk.QuickNoteObsidian</string>
+	<string>com.sunguk.VoiceDrop</string>
 	<key>CFBundleName</key>
-	<string>QuickNoteObsidian</string>
+	<string>VoiceDrop</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

@@ -5,7 +5,7 @@ import os
 
 enum NoteCreator {
 
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.QuickNoteObsidian"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.sunguk.VoiceDrop"
     private static let logger = Logger(subsystem: subsystem, category: "NoteCreator")
 
     static let maxTitleLength = 50
