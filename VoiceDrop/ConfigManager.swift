@@ -19,7 +19,7 @@ final class ConfigManager {
     private let defaults = UserDefaults.standard
 
     private let defaultRecordingsPath = NSString("~/Documents/superwhisper/recordings").expandingTildeInPath
-    private let defaultNoteDirectoryPath = NSString("~/Documents/Obsidian Vault/Project/아이디어").expandingTildeInPath
+    private let defaultNoteDirectoryPath = NSString("~/Downloads").expandingTildeInPath
 
     // MARK: - Properties
 
