@@ -1,0 +1,14 @@
+# Build
+build/
+
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Debug logs
+/tmp/qno_debug.log
+
+# Previous conversation exports
+*.txt
